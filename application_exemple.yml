@@ -1,0 +1,25 @@
+
+# exemple de fichier de configuration
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: service_monsite
+              uri: http://localhost:8081
+              predicates:
+                - Path=/monsite/**
+              filters:
+                # On capture tout ce qui vient après /service1/ et on le réinjecte
+                - RewritePath=/monsite/(?<segment>.*), /$\{segment}
+
+
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    org.springframework.security: debug
+    org.springframework.cloud.gateway: TRACE
+    reactor.netty: DEBUG
